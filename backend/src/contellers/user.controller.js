@@ -12,6 +12,8 @@ export const getUserProfile = asyncHandler(async (req, res) => {
     }
     res.status(200).json(user);
 }) 
+
+
 //update user profile
 export const updateUserProfile = asyncHandler(async (req, res) => {
     const { userId } = getAuth(req);
@@ -21,6 +23,8 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     }
     res.status(200).json(user);
 })
+
+
 //syncUser on database
 export const syncUser = asyncHandler(async (req, res) => {
     const { userId } = getAuth(req);
@@ -45,6 +49,8 @@ export const syncUser = asyncHandler(async (req, res) => {
    
     res.status(200).json(user);
 })
+
+
 //get current user id 
 export const getCurrentUserId = asyncHandler(async (req, res) => {
     const { userId } = getAuth(req);
