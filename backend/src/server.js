@@ -68,4 +68,4 @@ app.use(async (req, res, next) => {
 });
 
 //For vercel deployment
-export default app;
+export default serverless(app);
