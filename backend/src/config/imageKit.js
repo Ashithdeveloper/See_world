@@ -1,6 +1,6 @@
 import ImageKit from "imagekit";
 import dotenv from "dotenv";
-import { ENV } from "./env";
+import { ENV } from "./env.js";
 
 dotenv.config();
 

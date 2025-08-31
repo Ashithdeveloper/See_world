@@ -1,6 +1,6 @@
 import express from 'express';
 import { followUser, getCurrentUserId, getUserProfile, syncUser, updateUserProfile } from '../contellers/user.controller.js';
-import { productRouter } from '../middleware/auth.middleware.js';
+import { productAuth } from '../middleware/auth.middleware.js';
 
 const router = express.Router(); 
 
@@ -8,10 +8,10 @@ const router = express.Router();
 router.get("/profile/:username", getUserProfile )
 
 //protected routes
-router.post("/sync", productRouter, syncUser);
-router.put("/update", productRouter,updateUserProfile )
-router.get("/me", productRouter, getCurrentUserId );
-router.post("/follow/:userId", productRouter, followUser);
+router.post("/sync", productAuth, syncUser);
+router.put("/update", productAuth,updateUserProfile )
+router.get("/me", productAuth, getCurrentUserId );
+router.post("/follow/:userId", productAuth, followUser);
 
 
 export default router;
