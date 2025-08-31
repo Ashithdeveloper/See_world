@@ -26,7 +26,9 @@ app.use('/api/comment',commentRouter);
 //Notification main router
 app.use('/api/notification',notificationRouter);
 
-
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+})
 //error handler
 app.use((err, req, res, next) => {
   console.error(err);
@@ -40,3 +42,6 @@ app.listen(ENV.PORT, () =>{
     console.log('Server is running on port 5000');
     connectDB();
 })
+
+//For vercel deployment
+export default app
