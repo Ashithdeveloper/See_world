@@ -1,11 +1,13 @@
-import express  from "express";
+import express from "express";
 import { productAuth } from "../middleware/auth.middleware.js";
-import { deleteNotification, getNotifications } from "../contellers/notification.controller.js";
+import {
+  deleteNotification,
+  getNotifications,
+} from "../controllers/notification.controller.js";
 
 const router = express.Router();
 
-router.get("/",productAuth, getNotifications);
-router.get("/delete/:notificationId",productAuth,deleteNotification);;
-
+router.get("/", productAuth, getNotifications);
+router.get("/delete/:notificationId", productAuth, deleteNotification);
 
 export default router;
