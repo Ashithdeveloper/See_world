@@ -8,7 +8,6 @@ import postRouter from "./routes/post.route.js";
 import commentRouter from "./routes/comment.route.js";
 import notificationRouter from './routes/notification.route.js';
 import { arcjetMiddleware } from './middleware/arcjet.middleware.js';
-import serverless from "serverless-http";
 
 const app = express();
 
@@ -38,34 +37,18 @@ app.use((err, req, res, next) => {
   });
 });
 
-const startServer = async () =>{
+const startServer = async () => {
   try {
     await connectDB();
-     if (ENV.NODE_ENV !== "production") {
-       app.listen(ENV.PORT, () => {
-         console.log("Server is running on port 5000");
-       });
-     }
+    app.listen(ENV.PORT || 5000, () => {
+      console.log(`🚀 Server running on port ${ENV.PORT || 5000}`);
+    });
   } catch (error) {
     console.error(error);
     process.exit(1);
   }
-}
+};
 
 
-if (ENV.NODE_ENV !== "production") {
-  startServer(); // Only run locally
-}
 
-// ✅ For Vercel
-let isConnected = false;
-app.use(async (req, res, next) => {
-  if (!isConnected) {
-    await connectDB();
-    isConnected = true;
-  }
-  next();
-});
-
-//For vercel deployment
-export default serverless(app);
+startServer();
