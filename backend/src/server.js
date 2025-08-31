@@ -37,8 +37,12 @@ app.use((err, req, res, next) => {
     message: err.message || "Internal Server Error",
   });
 });
+// Ensure DB is connected before requests
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
-    connectDB();
  if (ENV.NODE_ENV !== "production") {
   app.listen(ENV.PORT, () => {
     console.log("Server is running on port 5000");
