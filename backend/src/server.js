@@ -52,8 +52,20 @@ const startServer = async () =>{
   }
 }
 
-startServer();
 
+if (ENV.NODE_ENV !== "production") {
+  startServer(); // Only run locally
+}
+
+// ✅ For Vercel
+let isConnected = false;
+app.use(async (req, res, next) => {
+  if (!isConnected) {
+    await connectDB();
+    isConnected = true;
+  }
+  next();
+});
 
 //For vercel deployment
 export const handler = serverless(app);
