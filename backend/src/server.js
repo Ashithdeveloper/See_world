@@ -8,6 +8,7 @@ import postRouter from "./routes/post.route.js";
 import commentRouter from "./routes/comment.route.js";
 import notificationRouter from './routes/notification.route.js';
 import { arcjetMiddleware } from './middleware/arcjet.middleware.js';
+import serverless from "serverless-http";
 
 const app = express();
 
@@ -37,7 +38,7 @@ app.use((err, req, res, next) => {
   });
 });
 
- if (ENV.NODE_ENV === "production") {
+ if (ENV.NODE_ENV !== "production") {
   app.listen(ENV.PORT, () => {
     console.log("Server is running on port 5000");
     connectDB();
@@ -46,4 +47,4 @@ app.use((err, req, res, next) => {
 
 
 //For vercel deployment
-export default app
+export const handler = serverless(app);
