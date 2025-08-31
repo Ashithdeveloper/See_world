@@ -37,17 +37,22 @@ app.use((err, req, res, next) => {
     message: err.message || "Internal Server Error",
   });
 });
-// Ensure DB is connected before requests
-app.use(async (req, res, next) => {
-  await connectDB();
-  next();
-});
 
- if (ENV.NODE_ENV !== "production") {
-  app.listen(ENV.PORT, () => {
-    console.log("Server is running on port 5000");
-  });
- }
+const startServer = async () =>{
+  try {
+    await connectDB();
+     if (ENV.NODE_ENV !== "production") {
+       app.listen(ENV.PORT, () => {
+         console.log("Server is running on port 5000");
+       });
+     }
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+}
+
+startServer();
 
 
 //For vercel deployment
