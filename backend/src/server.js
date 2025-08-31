@@ -68,4 +68,4 @@ app.use(async (req, res, next) => {
 });
 
 //For vercel deployment
-export const handler = serverless(app);
+export default app;
