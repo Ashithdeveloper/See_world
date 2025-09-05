@@ -7,16 +7,14 @@ import {
   updateUserProfile,
 } from "../controllers/user.controller.js";
 import { productAuth } from "../middleware/auth.middleware.js";
-import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 
 const router = express.Router();
-const product = new ClerkExpressRequireAuth();
 
 //public routes
-router.get("/profile/:username", product,getUserProfile);
+router.get("/profile/:username", getUserProfile);
 
 //protected routes
-router.post("/sync", , syncUser);
+router.post("/sync", productAuth, syncUser);
 router.put("/update", productAuth, updateUserProfile);
 router.get("/me", productAuth, getCurrentUserId);
 router.post("/follow/:userId", productAuth, followUser);
