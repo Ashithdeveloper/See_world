@@ -8,6 +8,7 @@ import {
 } from "../controllers/user.controller.js";
 import { productAuth } from "../middleware/auth.middleware.js";
 
+
 const router = express.Router();
 
 //public routes

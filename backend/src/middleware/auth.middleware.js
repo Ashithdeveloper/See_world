@@ -1,4 +1,4 @@
-export const protectRoute = async (req, res, next) => {
+export const productAuth = async (req, res, next) => {
   if (!req.auth().isAuthenticated) {
     return res
       .status(401)
