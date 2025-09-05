@@ -1,13 +1,8 @@
-// export const productAuth = (req, res, next) => {
-//   try {
-//     if (!req.auth || !req.auth().isAuthenticated()) {
-//       return res.status(401).json({ message: "Unauthorized" });
-//     }
-//     next();
-//   } catch (error) {
-//     next(error); 
-//   }
-// };
-import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
-
-export const productAuth = ClerkExpressRequireAuth();
+export const protectRoute = async (req, res, next) => {
+  if (!req.auth().isAuthenticated) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized - you must be logged in" });
+  }
+  next();
+};
