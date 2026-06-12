@@ -1,10 +1,12 @@
 
-import { useSocialAuth } from "@/hooks/useSocialAuth";
 import { LinearGradient } from "expo-linear-gradient";
 import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
 
+import { useSocialAuth } from "@/hooks/useSocialAuth";
+
 export default function Index() {
-  const {isLoading , handleSocialAuth} = useSocialAuth();
+  const { signIn ,userInfo } = useSocialAuth();
+  const isLoading = false;
   return (
     <LinearGradient
       colors={["#ffffff", "#ffffff", "#22c55e"]}
@@ -26,7 +28,7 @@ export default function Index() {
           <View className="flex-col gap-2">
             <TouchableOpacity
               className="flex-row items-center justify-center bg-white border border-gray-300 rounded-full py-3 px-6"
-              onPress={() => handleSocialAuth("oauth_google")}
+              onPress={() => signIn()}
               style={{
                 shadowColor: "#000",
                 shadowOffset: { width: 0, height: 1 },
@@ -50,9 +52,10 @@ export default function Index() {
                 </View>
               )}
             </TouchableOpacity>
+            {userInfo && <Text>Welcome, {userInfo.name}</Text>}
             <TouchableOpacity
               className="flex-row items-center justify-center bg-white border border-gray-300 rounded-full py-3 px-6"
-              onPress={() => handleSocialAuth("oauth_apple")}
+              onPress={() => signIn()}
               style={{
                 shadowColor: "#000",
                 shadowOffset: { width: 0, height: 1 },

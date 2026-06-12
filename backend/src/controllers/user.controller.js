@@ -27,29 +27,37 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 
 //syncUser on database
 export const syncUser = asyncHandler(async (req, res) => {
-    const { userId } = getAuth(req);
-    const existingUser = await User.findOne({ clerkId: userId });
-    if (existingUser) {
-        return res.status(404).json({ message: "already exist" });   
-    }
-    // adding user to database
-    const newUser = await clerkClient.users.getUser(userId);
-    const userData = {
-      clerkId: userId,
-      email: clerkUser.emailAddresses[0].emailAddress,
-      firstName: clerkUser.firstName || "",
-      lastName: clerkUser.lastName || "",
-      username: clerkUser.emailAddresses[0].emailAddress.split("@")[0],
-      profilePicture: clerkUser.imageUrl || "",
-    };
+  const { userId } = getAuth(req);
 
-    const user = await User.create(userData);
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
-    res.status(201).json({ user, message: "User created successfully" });
-   
-    res.status(200).json(user);
-})
+  // check if user already exists
+  const existingUser = await User.findOne({ clerkId: userId });
+  if (existingUser) {
+    return res.status(409).json({ message: "User already exists" });
+  }
 
+  // fetch user from Clerk
+  const clerkUser = await clerkClient.users.getUser(userId);
+
+  const userData = {
+    clerkId: userId,
+    email: clerkUser.emailAddresses[0].emailAddress,
+    firstName: clerkUser.firstName || "",
+    lastName: clerkUser.lastName || "",
+    username: clerkUser.emailAddresses[0].emailAddress.split("@")[0],
+    profilePicture: clerkUser.imageUrl || "",
+  };
+
+  const user = await User.create(userData);
+
+  return res.status(201).json({
+    user,
+    message: "User created successfully",
+  });
+});
 
 //get current user id 
 export const getCurrentUserId = asyncHandler(async (req, res) => {

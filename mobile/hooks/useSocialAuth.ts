@@ -1,32 +1,46 @@
-import { useSSO } from "@clerk/clerk-expo";
-import { useState } from "react";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import * as Linking from "expo-linking";
+import { makeRedirectUri } from "expo-auth-session";
 
+WebBrowser.maybeCompleteAuthSession();
 
 export const useSocialAuth = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { startSSOFlow } = useSSO();
-  const handleSocialAuth = async (strategy: "oauth_google" | "oauth_apple") => {
-    setIsLoading(true);
-    try {
-      const { createdSessionId, setActive } = await startSSOFlow({
-        strategy,
-        redirectUrl: Linking.createURL("/"),
-      });
+  const [userInfo, setUserInfo] = useState<any>(null);
 
-      if (createdSessionId && setActive) {
-        await setActive({ session: createdSessionId });
-      
-      }
-    } catch (error) {
-      console.log(error);
-      const provider = strategy === "oauth_google" ? "Google" : "Apple";
-      Alert.alert(`Failed to sign in with ${provider}`);
-    } finally {
-      setIsLoading(false);
+  const isDevelopment = __DEV__; // Detect development mode
+
+  const redirectUri = isDevelopment
+    ? "https://auth.expo.io/@ashith.s.f/mobile"
+    : makeRedirectUri({ scheme: "mobile" }); // Custom scheme for standalone builds
+
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId:
+      "1057480029346-c1bf5goo4e73hkf5lubke33biif12bq7.apps.googleusercontent.com",
+    redirectUri,
+  });
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      const { id_token } = response.params;
+
+      fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: { Authorization: `Bearer ${id_token}` },
+      })
+        .then((res) => res.json())
+        .then((user) => {
+          setUserInfo(user);
+          console.log("Google user info", user);
+        })
+        .catch((err) => console.error("Failed to fetch user info:", err));
+    } else if (response?.type === "error") {
+      Alert.alert("Google login failed");
     }
-  };
+  }, [response]);
 
-  return { isLoading, handleSocialAuth };
+  return {
+    signIn: () => promptAsync({ useProxy: isDevelopment }), // Use proxy only in dev
+    userInfo,
+  };
 };

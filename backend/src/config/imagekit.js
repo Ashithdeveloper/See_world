@@ -1,7 +1,5 @@
-import ImageKit from "imagekit";
+import ImageKit from "@imagekit/nodejs";
 import { ENV } from "./env.js";
-
-
 
 const imagekit = new ImageKit({
   publicKey: ENV.IMAGEKIT_PUBLIC_KEY,
