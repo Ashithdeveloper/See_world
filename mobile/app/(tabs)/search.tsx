@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 
 const TRENDING_TOPICS = [
   { topic: "#ReactNative", tweets: "125K" },

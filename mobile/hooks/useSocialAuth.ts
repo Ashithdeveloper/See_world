@@ -40,7 +40,7 @@ export const useSocialAuth = () => {
   }, [response]);
 
   return {
-    signIn: () => promptAsync({ useProxy: isDevelopment }), // Use proxy only in dev
+    signIn: () => promptAsync(), // Trigger Google auth flow
     userInfo,
   };
 };

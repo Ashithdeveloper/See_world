@@ -2,15 +2,29 @@ import React from 'react'
 import { Redirect, Tabs } from 'expo-router'
 import { Feather } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-
+import { useAuth } from '@clerk/clerk-expo';
+import { useUserSync } from '@/hooks/userUserSync';
+import { ActivityIndicator, View } from 'react-native';
 
 export default function TapsLayout() {
+    const { isSignedIn, isLoaded } = useAuth();
     const insets  = useSafeAreaInsets();
-   
- 
-    //If user not sigin in redirect to auth
-   
+
+    // Sync the user with our backend database if signed in
+    useUserSync();
+
+    if (!isLoaded) {
+        return (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" }}>
+                <ActivityIndicator size="large" color="#22c55e" />
+            </View>
+        );
+    }
+
+    if (!isSignedIn) {
+        return <Redirect href="/(auth)" />;
+    }
+
   return (
     <Tabs
       screenOptions={{
