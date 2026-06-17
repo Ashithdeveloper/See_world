@@ -31,7 +31,11 @@ const tokenCache = {
   },
 };
 
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_Z3Jvd2luZy1oZW5oYW5rLTM3LmNsZXJrLmFjY291bnRzLmRldiQ";
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+if (!publishableKey) {
+  throw new Error("Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in environment variables");
+}
 
 const queryClient = new QueryClient();
 

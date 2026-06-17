@@ -22,3 +22,5 @@ router.post("/like/:postId", productAuth, LikePost);
 router.post("/delete/:postId", productAuth, deletePost);
 
 export default router;
+
+

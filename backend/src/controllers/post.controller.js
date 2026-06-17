@@ -44,7 +44,7 @@ export const getUserPosts = asyncHandler(asyncHandler(async (req, res) => {
 
 //create post 
 export const createPost = asyncHandler(async (req, res) => {
-  const { userId } = getAuth(req);
+  const { userId } = req.auth;
   const { content , fileId ,image } = req.body;
   const user = await User.findOne({ clerkId: userId });
 // user verfication 
@@ -80,7 +80,7 @@ export const createPost = asyncHandler(async (req, res) => {
 
 //Like and unLink function 
 export const LikePost = asyncHandler(async (req, res) => {
-    const { userId } = getAuth(req);
+    const { userId } = req.auth;
     const { postId } = req.params;
 
     const user = await User.findOne({ clerkId: userId });
@@ -121,7 +121,7 @@ export const LikePost = asyncHandler(async (req, res) => {
 //delete post 
 export const deletePost = asyncHandler(async (req, res) => {
    const { postId } = req.params;
-   const { userId } = getAuth(req);
+   const { userId } = req.auth;
    const FileId = req.body.fileId;
    //check user
    const user = await User.findOne({ clerkId: userId });

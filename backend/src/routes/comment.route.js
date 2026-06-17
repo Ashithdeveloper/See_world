@@ -16,3 +16,5 @@ router.post("/:postId", productAuth, createComment);
 router.post("/delete/:commentId", productAuth, deleteComment);
 
 export default router;
+
+

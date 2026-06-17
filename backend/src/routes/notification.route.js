@@ -11,3 +11,5 @@ router.get("/", productAuth, getNotifications);
 router.get("/delete/:notificationId", productAuth, deleteNotification);
 
 export default router;
+
+

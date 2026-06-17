@@ -2,12 +2,12 @@ import express from 'express';
 import { ENV } from './config/env.js';
 import cors from 'cors';
 import { connectDB } from './config/db.js';
-import { clerkMiddleware } from "@clerk/express";
 import userRouter from "./routes/user.route.js";
 import postRouter from "./routes/post.route.js";
 import commentRouter from "./routes/comment.route.js";
 import notificationRouter from './routes/notification.route.js';
 import { arcjetMiddleware } from './middleware/arcjet.middleware.js';
+
 
 const app = express();
 app.use(
@@ -19,15 +19,12 @@ app.use(
 );
 app.use(express.json());
 
-app.use(clerkMiddleware({}));
+// Note: clerkMiddleware() is applied per-route (not globally) for Express 5 compatibility
 app.use(arcjetMiddleware);
+
 app.get("/debug", (req, res) => {
   console.log("Debug route hit!");
   res.json({ ok: true });
-});
-app.post("/api/users/sync", (req, res) => {
-  console.log("Sync endpoint hit!");
-  res.json({ message: "User synced (dev bypass)" });
 });
 //user main router
 app.use('/api/users',userRouter);
