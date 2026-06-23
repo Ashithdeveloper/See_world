@@ -30,7 +30,6 @@ const SearchScreen = () => {
           />
         </View>
       </View>
-
       {/* TRENDING LIST */}
       <ScrollView className="flex-1">
         <View className="p-4">

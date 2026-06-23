@@ -35,7 +35,7 @@ export default function TapsLayout() {
           backgroundColor: "#fff",
           borderTopWidth: 1,
           borderTopColor: "#E1E8ED",
-          height: 50 + insets.bottom,
+          height: 30 + insets.bottom,
           paddingTop: 8,
         },
       }}
